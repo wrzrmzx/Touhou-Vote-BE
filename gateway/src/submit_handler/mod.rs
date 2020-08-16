@@ -21,6 +21,38 @@ pub struct CharacterSubmitRest {
 	pub user_ip: String // 防刷票
 }
 
+#[derive(Clone, Serialize, Deserialize)]
+pub struct MusicSubmitRest {
+	pub user_id: String,
+	pub music: Vec<MusicSubmit>,
+	pub created_at: DateTime<Utc>,
+	pub user_ip: String // 防刷票
+}
+
+#[derive(Clone, Serialize, Deserialize)]
+pub struct WorkSubmitRest {
+	pub user_id: String,
+	pub works: Vec<WorkSubmit>,
+	pub created_at: DateTime<Utc>,
+	pub user_ip: String // 防刷票
+}
+
+#[derive(Clone, Serialize, Deserialize)]
+pub struct CPSubmitRest {
+	pub user_id: String,
+	pub cps: Vec<CPSubmit>,
+	pub created_at: DateTime<Utc>,
+	pub user_ip: String // 防刷票
+}
+
+#[derive(Clone, Serialize, Deserialize)]
+pub struct PaperSubmitRest {
+	pub user_id: String,
+	pub papers: Vec<PaperSubmit>,
+	pub created_at: DateTime<Utc>,
+	pub user_ip: String // 防刷票
+}
+
 // ------------------------------------------------
 // GQL Schemas
 // ------------------------------------------------
