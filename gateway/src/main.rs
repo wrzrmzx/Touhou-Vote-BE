@@ -1,3 +1,4 @@
+#![allow(non_snake_case)]
 
 use std::io;
 use std::sync::Arc;
@@ -9,6 +10,7 @@ use juniper::http::GraphQLRequest;
 #[macro_use]
 mod common;
 mod schema;
+mod services;
 
 use std::os::raw::*;
 

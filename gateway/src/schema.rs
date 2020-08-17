@@ -7,6 +7,8 @@ pub struct Context {
 
 impl juniper::Context for Context {}
 
+use crate::common::PostResult;
+
 #[path="submit_handler/mod.rs"]
 mod submit_handler;
 
@@ -36,28 +38,28 @@ impl MutationRoot {
 	//     submit_handler
 	// ------------------------------------------------
 
-	/// charcater
-	fn submitCharcaterVote(content: NewCharacterSubmit) -> FieldResult<NewCharacterSubmit> {
-		submit_handler::submitCharcaterVote_impl(&content)
+	/// Character
+	fn submitCharacterVote(content: NewCharacterSubmit) -> FieldResult<PostResult> {
+		submit_handler::submitCharacterVote_impl(&content)
 	}
 
 	/// music
-	fn submitMusicVote(content: NewMusicSubmit) -> FieldResult<NewMusicSubmit> {
+	fn submitMusicVote(content: NewMusicSubmit) -> FieldResult<PostResult> {
 	   submit_handler::submitMusicVote_impl(&content)
 	}
 
 	/// work
-	fn submitWorkVote(content: NewWorkSubmit) -> FieldResult<NewWorkSubmit> {
+	fn submitWorkVote(content: NewWorkSubmit) -> FieldResult<PostResult> {
 		submit_handler::submitWorkVote_impl(&content)
 	}
 
 	/// CP
-	fn submitCPVote(content: NewCPSubmit) -> FieldResult<NewCPSubmit> {
+	fn submitCPVote(content: NewCPSubmit) -> FieldResult<PostResult> {
 		submit_handler::submitCPVote_impl(&content)
 	}
 
 	/// paper
-	fn submitPaperVote(content: NewPaperSubmit) -> FieldResult<NewPaperSubmit> {
+	fn submitPaperVote(content: NewPaperSubmit) -> FieldResult<PostResult> {
 		submit_handler::submitPaperVote_impl(&content)
 	}
 }

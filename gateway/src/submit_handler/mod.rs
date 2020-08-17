@@ -3,7 +3,7 @@ use juniper::graphql_value;
 
 use juniper::FieldResult;
 
-use crate::common::Error;
+use crate::common::{Error, UserVerifyResult, PostResult};
 
 use chrono::{DateTime, Utc};
 use serde_derive::{Serialize, Deserialize};
@@ -137,22 +137,33 @@ pub struct NewPaperSubmit {
 // Root Quries
 // ------------------------------------------------
 
-pub fn submitCharcaterVote_impl(content: &NewCharacterSubmit) -> FieldResult<NewCharacterSubmit> {
-	Ok(content.clone())
+use crate::services::*;
+
+pub fn submitCharacterVote_impl(content: &NewCharacterSubmit) -> FieldResult<PostResult> {
+	// verify user_id
+	getJSON!(UserVerifyResult, format!("http://{}/verify/{}", USER_MANAGER, content.user_id));
+	let submit_json = CharacterSubmitRest {
+		user_id: content.user_id.clone(),
+		characters: content.characters.clone(),
+		created_at: Utc::now(),
+		user_ip: "test".into()
+	};
+	postJSON!(PostResult, format!("http://{}/charcater/submit", SUBMIT_HANDLER), submit_json);
+	Ok(PostResult::new())
 }
 
-pub fn submitMusicVote_impl(content: &NewMusicSubmit) -> FieldResult<NewMusicSubmit> {
-	Ok(content.clone())
+pub fn submitMusicVote_impl(content: &NewMusicSubmit) -> FieldResult<PostResult> {
+	Ok(PostResult::new())
 }
 
-pub fn submitCPVote_impl(content: &NewCPSubmit) -> FieldResult<NewCPSubmit> {
-	Ok(content.clone())
+pub fn submitCPVote_impl(content: &NewCPSubmit) -> FieldResult<PostResult> {
+	Ok(PostResult::new())
 }
 
-pub fn submitWorkVote_impl(content: &NewWorkSubmit) -> FieldResult<NewWorkSubmit> {
-	Ok(content.clone())
+pub fn submitWorkVote_impl(content: &NewWorkSubmit) -> FieldResult<PostResult> {
+	Ok(PostResult::new())
 }
 
-pub fn submitPaperVote_impl(content: &NewPaperSubmit) -> FieldResult<NewPaperSubmit> {
-	Ok(content.clone())
+pub fn submitPaperVote_impl(content: &NewPaperSubmit) -> FieldResult<PostResult> {
+	Ok(PostResult::new())
 }
