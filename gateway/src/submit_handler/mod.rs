@@ -123,6 +123,7 @@ pub struct NewWorkSubmit {
 #[graphql(description="Single paper submit")]
 pub struct PaperSubmit {
 	pub id: String,
+	/// 答案
 	pub answer: String
 }
 

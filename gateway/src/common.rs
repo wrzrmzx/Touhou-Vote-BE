@@ -17,6 +17,26 @@ pub struct PostResult {
     pub errno: i32
 }
 
+#[derive(juniper::GraphQLEnum, Clone, Serialize, Deserialize)]
+pub enum VoteSection {
+    Characters,
+    Musics,
+    CPs,
+    Works,
+    Papers
+}
+
+#[derive(juniper::GraphQLEnum, Clone, Serialize, Deserialize)]
+pub enum FilterConditionOp {
+    Equ,
+    Neq,
+    Gt,
+    Gte,
+    Lt,
+    Lte,
+    Contains
+}
+
 impl PostResult {
     pub fn new() -> PostResult {
         PostResult {

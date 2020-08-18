@@ -11,17 +11,24 @@ use crate::common::PostResult;
 
 #[path="submit_handler/mod.rs"]
 mod submit_handler;
+use submit_handler::{NewCharacterSubmit, NewMusicSubmit, NewWorkSubmit, NewCPSubmit, NewPaperSubmit};
 
 #[path="result_query/mod.rs"]
 mod result_query;
-
-use submit_handler::{NewCharacterSubmit, NewMusicSubmit, NewWorkSubmit, NewCPSubmit, NewPaperSubmit};
+use result_query::{CharacterRankResult, Reasons};
 
 pub struct QueryRoot;
 
 #[juniper::object]
 impl QueryRoot {
+	// ------------------------------------------------
+	//     result_query
+	// ------------------------------------------------
 
+	/// 人物投票理由
+	fn character_reasons(name: String) -> FieldResult<Reasons> {
+		result_query::character_reasons_impl(name)
+	}
 }
 
 
