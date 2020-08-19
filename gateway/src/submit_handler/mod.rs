@@ -77,6 +77,7 @@ pub struct NewCharacterSubmit {
 pub struct CPSubmit {
 	pub name_a: String,
 	pub name_b: String,
+	pub name_c: Option<String>,
 	pub active: String,
 	pub reason: Option<String>,
 	pub rank: i32
