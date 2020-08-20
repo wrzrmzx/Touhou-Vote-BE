@@ -1,5 +1,6 @@
 
 use juniper::graphql_value;
+use std::collections::BTreeMap;
 
 use juniper::FieldResult;
 
@@ -14,8 +15,25 @@ use bson::oid::ObjectId;
 // ------------------------------------------------
 
 #[derive(juniper::GraphQLObject, Clone, Serialize, Deserialize)]
+#[graphql(description="单个问卷项目选项及对应结果")]
+pub struct SinglePaperOptionResult {
+    /// 选项名
+    pub option_id: String,
+    /// 结果数量（男）
+    pub result_male: i32,
+    /// 结果数量（女）
+    pub result_female: i32
+}
+
+#[derive(juniper::GraphQLObject, Clone, Serialize, Deserialize)]
 #[graphql(description="单个问卷项目结果")]
 pub struct SinglePaperResult {
+    /// 项目名
+    pub id: String,
+    /// 回答结果（数值结果）
+    pub answers_counts: Option<Vec<SinglePaperOptionResult>>,
+    /// 回答结果（文本结果）
+    pub answers_texts: Option<Vec<String>>
 }
 
 #[derive(juniper::GraphQLObject, Clone, Serialize, Deserialize)]
@@ -24,10 +42,12 @@ pub struct PaperResults {
     /// 所有问卷项目结果
     pub results: Vec<SinglePaperResult>,
     /// 使用的过滤器
-    pub filter_condtions: Option<FilterConditions>
+    pub filter_condtions: Option<FilterConditions>,
+    /// 填写趋势
+    pub trends: Option<Trends>,
 }
 
-#[derive(juniper::GraphQLObject, Clone, Serialize, Deserialize)]
+#[derive(juniper::GraphQLInputObject, Clone, Serialize, Deserialize)]
 #[graphql(description="单个过滤器条件")]
 pub struct SingleFilterCondition {
     /// 来源
@@ -40,7 +60,7 @@ pub struct SingleFilterCondition {
     pub rhs: String 
 }
 
-#[derive(juniper::GraphQLObject, Clone, Serialize, Deserialize)]
+#[derive(juniper::GraphQLInputObject, Clone, Serialize, Deserialize)]
 #[graphql(description="过滤器条件（所有条件与）")]
 pub struct FilterConditions { // 
     pub conditions: Vec<SingleFilterCondition>
@@ -73,9 +93,10 @@ pub struct Trends {
     pub to_date: DateTime<Utc>
 }
 
-#[derive(juniper::GraphQLObject, Clone, Serialize, Deserialize)]
-#[graphql(description="单个人物的结果")]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct SingleCharacterResult {
+    /// 投票ID（2020）
+    pub vote_id: i32,
     /// 名字
     pub name: String,
     /// 排名
@@ -123,7 +144,87 @@ pub struct CharacterRankResult {
 // GQL Schemas
 // ------------------------------------------------
 
-// see REST schemas
+#[juniper::object]
+#[graphql(description="单个人物的结果")]
+impl SingleCharacterResult {
+    /// 名字
+    pub fn name(&self) -> &String {
+        &self.name
+    }
+    /// 排名
+    pub fn rank(&self) -> &i32 {
+        &self.rank
+    }
+    /// 票数
+    pub fn vote_count(&self) -> &i32 {
+        &self.vote_count
+    }
+    /// 本名加权后票数
+    pub fn vote_count_weighted(&self) -> &i32 {
+        &self.vote_count_weighted
+    }
+    /// 票数占比
+    pub fn vote_ratio(&self) -> &f64 {
+        &self.vote_ratio
+    }
+    /// 本名票数
+    pub fn vote_first_count(&self) -> &i32 {
+        &self.vote_first_count
+    }
+    /// 本名占比
+    pub fn vote_first_ratio(&self) -> &f64 {
+        &self.vote_first_ratio
+    }
+    /// 男性票数
+    pub fn male_count(&self) -> &i32 {
+        &self.male_count
+    }
+    /// 男性占比
+    pub fn male_ratio(&self) -> &f64 {
+        &self.male_ratio
+    }
+    /// 女性票数
+    pub fn female_count(&self) -> &i32 {
+        &self.female_count
+    }
+    /// 女性占比
+    pub fn female_ratio(&self) -> &f64 {
+        &self.female_ratio
+    }
+    /// 前一次排名
+    pub fn rank_prev(&self) -> Option<i32> {
+        None
+    }
+    /// 投票理由
+    pub fn reasons(&self) -> Option<Reasons> {
+        None
+    }
+    /// 票数趋势
+    pub fn trends(&self) -> Option<Trends> {
+        None
+    }
+    /// 根据投票人物过滤的问卷
+    pub fn papers(&self) -> Option<PaperResults> {
+        None
+    }
+    /// 同投率
+    pub fn cooccurrence_ratio(&self) -> Option<f64> {
+        None
+    }
+}
+
+#[juniper::object]
+#[graphql(description="人物的结果")]
+impl CharacterRankResult {
+    /// 所有人物结果
+    pub fn characters(&self) -> &Vec<SingleCharacterResult> {
+        &self.characters
+    }
+    /// 使用的过滤器
+    pub fn filter_condtions(&self) -> Option<FilterConditions> {
+        None
+    }
+}
 
 // ------------------------------------------------
 // Root Quries
@@ -137,4 +238,33 @@ use crate::services::*;
 
 pub fn character_reasons_impl(name: String) -> FieldResult<Reasons> {
     Ok(Reasons { reasons: vec![] })
+}
+
+pub fn single_character_result_impl(name: String, filter: Option<FilterConditions>) -> FieldResult<SingleCharacterResult> {
+    Ok(SingleCharacterResult {
+        vote_id: 2020,
+        name: "博丽灵梦".into(),
+        rank: 1,
+        vote_count: 6000,
+        vote_count_weighted: 7000,
+        vote_ratio: 0.8,
+        vote_first_count: 600,
+        vote_first_ratio: 0.1,
+        male_count: 5000,
+        male_ratio: 0.8333333333,
+        female_count: 1000,
+        female_ratio: 0.1666666666,
+        rank_prev: None,
+        reasons: None,
+        trends: None,
+        papers: None,
+        cooccurrence_ratio: None
+    })
+}
+
+pub fn character_rank_result_impl(filter: Option<FilterConditions>) -> FieldResult<CharacterRankResult> {
+    Ok(CharacterRankResult {
+        characters: vec![],
+        filter_condtions: filter
+    })
 }
