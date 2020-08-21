@@ -42,7 +42,7 @@ pub struct PaperResults {
     /// 所有问卷项目结果
     pub results: Vec<SinglePaperResult>,
     /// 使用的过滤器
-    pub filter_condtions: Option<FilterConditions>,
+    pub filter_condtions: Option<FilterConditionsOutput>,
     /// 填写趋势
     pub trends: Option<Trends>,
 }
@@ -64,6 +64,44 @@ pub struct SingleFilterCondition {
 #[graphql(description="过滤器条件（所有条件与）")]
 pub struct FilterConditions { // 
     pub conditions: Vec<SingleFilterCondition>
+}
+
+#[derive(juniper::GraphQLObject, Clone, Serialize, Deserialize)]
+#[graphql(description="(输出)单个过滤器条件")]
+pub struct SingleFilterConditionOutput {
+    /// 来源
+    pub section: VoteSection, 
+    /// 条件
+    pub condition: FilterConditionOp, 
+    /// 左值
+    pub lhs: String, 
+    /// 右值
+    pub rhs: String 
+}
+
+#[derive(juniper::GraphQLObject, Clone, Serialize, Deserialize)]
+#[graphql(description="(输出)过滤器条件（所有条件与）")]
+pub struct FilterConditionsOutput { // 
+    pub conditions: Vec<SingleFilterConditionOutput>
+}
+
+impl SingleFilterConditionOutput {
+    pub fn from_input(inp: &SingleFilterCondition) -> SingleFilterConditionOutput {
+        SingleFilterConditionOutput {
+            section: inp.section.clone(),
+            condition: inp.condition.clone(),
+            lhs: inp.lhs.clone(),
+            rhs: inp.rhs.clone()
+        }
+    }
+}
+
+impl FilterConditionsOutput {
+    pub fn from_input(inp: &FilterConditions) -> FilterConditionsOutput {
+        FilterConditionsOutput {
+            conditions: inp.conditions.iter().map(|ref x| SingleFilterConditionOutput::from_input(x)).collect::<Vec<_>>()
+        }
+    }
 }
 
 #[derive(juniper::GraphQLObject, Clone, Serialize, Deserialize)]
@@ -136,7 +174,7 @@ pub struct CharacterRankResult {
     /// 所有人物结果
     pub characters: Vec<SingleCharacterResult>,
     /// 使用的过滤器
-    pub filter_condtions: Option<FilterConditions>
+    pub filter_condtions: Option<FilterConditionsOutput>
 }
 
 
@@ -221,7 +259,7 @@ impl CharacterRankResult {
         &self.characters
     }
     /// 使用的过滤器
-    pub fn filter_condtions(&self) -> Option<FilterConditions> {
+    pub fn filter_condtions(&self) -> Option<FilterConditionsOutput> {
         None
     }
 }
@@ -265,6 +303,6 @@ pub fn single_character_result_impl(name: String, filter: Option<FilterCondition
 pub fn character_rank_result_impl(filter: Option<FilterConditions>) -> FieldResult<CharacterRankResult> {
     Ok(CharacterRankResult {
         characters: vec![],
-        filter_condtions: filter
+        filter_condtions: match filter { Some(ref x) => Some(FilterConditionsOutput::from_input(&x)), None => None }
     })
 }
