@@ -1,6 +1,8 @@
 use juniper::FieldResult;
 use juniper::RootNode;
 
+use chrono::{DateTime, Utc};
+
 #[derive(Clone)]
 pub struct Context {
 }
@@ -49,6 +51,10 @@ impl MutationRoot {
 	
 	fn apiVersion() -> &str {
 		"1.0"
+	}
+
+	fn serverDate() -> DateTime<Utc> {
+		Utc::now()
 	}
 
 	// ------------------------------------------------
