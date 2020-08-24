@@ -3,6 +3,7 @@
 use std::io;
 use std::sync::Arc;
 
+use actix_cors::Cors;
 use actix_web::{middleware, web, App, Error, HttpResponse, HttpServer};
 use juniper::http::graphiql::graphiql_source;
 use juniper::http::GraphQLRequest;
@@ -50,6 +51,15 @@ async fn main() -> io::Result<()> {
 	HttpServer::new(move || {
 		App::new()
 			.data(schema.clone())
+			.wrap(
+				Cors::new() // <- Construct CORS middleware builder
+					.allowed_origin("http://localhost:3000")
+					.allowed_origin("http://127.0.0.1:3000")
+					.allowed_origin("http://localhost:8080")
+					.allowed_origin("http://127.0.0.1:8080")
+					.max_age(3600)
+					.finish()
+			)
 			.wrap(middleware::Logger::default())
 			.service(web::resource("/graphql").route(web::post().to(graphql)))
 			.service(web::resource("/graphiql").route(web::get().to(graphiql)))
