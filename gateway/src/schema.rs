@@ -17,6 +17,10 @@ use submit_handler::{NewCharacterSubmit, NewMusicSubmit, NewWorkSubmit, NewCPSub
 mod result_query;
 use result_query::{CharacterRankResult, Reasons, FilterConditions, SingleCharacterResult};
 
+#[path="user_manager/mod.rs"]
+mod user_manager;
+use user_manager::{SendVoteCodeInputs, LoginInputs, LoginResults};
+
 pub struct QueryRoot;
 
 #[juniper::object]
@@ -49,6 +53,20 @@ impl MutationRoot {
 	
 	fn apiVersion() -> &str {
 		"1.0"
+	}
+
+	// ------------------------------------------------
+	//     user_manager
+	// ------------------------------------------------
+
+	/// 发送投票代码
+	fn sendVoteCode(content: SendVoteCodeInputs) -> FieldResult<PostResult> {
+		user_manager::sendVoteCode_impl(content)
+	}
+
+	/// 使用老帐号登录
+	fn login(content: LoginInputs) -> FieldResult<LoginResults> {
+		user_manager::login_impl(content)
 	}
 
 	// ------------------------------------------------

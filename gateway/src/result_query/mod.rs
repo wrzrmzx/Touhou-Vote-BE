@@ -302,7 +302,25 @@ pub fn single_character_result_impl(name: String, filter: Option<FilterCondition
 
 pub fn character_rank_result_impl(filter: Option<FilterConditions>) -> FieldResult<CharacterRankResult> {
     Ok(CharacterRankResult {
-        characters: vec![],
+        characters: vec![SingleCharacterResult {
+            vote_id: 2020,
+            name: "博丽灵梦".into(),
+            rank: 1,
+            vote_count: 6000,
+            vote_count_weighted: 7000,
+            vote_ratio: 0.8,
+            vote_first_count: 600,
+            vote_first_ratio: 0.1,
+            male_count: 5000,
+            male_ratio: 0.8333333333,
+            female_count: 1000,
+            female_ratio: 0.1666666666,
+            rank_prev: None,
+            reasons: None,
+            trends: None,
+            papers: None,
+            cooccurrence_ratio: None
+        }],
         filter_condtions: match filter { Some(ref x) => Some(FilterConditionsOutput::from_input(&x)), None => None }
     })
 }
