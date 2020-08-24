@@ -21,7 +21,7 @@ use result_query::{CharacterRankResult, Reasons, FilterConditions, SingleCharact
 
 #[path="user_manager/mod.rs"]
 mod user_manager;
-use user_manager::{SendVoteCodeInputs, LoginInputs, LoginResults};
+use user_manager::{SendVoteTokenInputs, LoginInputs, LoginResults};
 
 pub struct QueryRoot;
 
@@ -66,8 +66,8 @@ impl MutationRoot {
 	// ------------------------------------------------
 
 	/// 发送投票代码
-	fn sendVoteCode(content: SendVoteCodeInputs) -> FieldResult<PostResult> {
-		user_manager::sendVoteCode_impl(content)
+	fn sendVoteCode(content: SendVoteTokenInputs) -> FieldResult<PostResult> {
+		user_manager::sendVoteToken_impl(content)
 	}
 
 	/// 使用老帐号登录

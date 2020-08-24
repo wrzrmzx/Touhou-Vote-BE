@@ -24,7 +24,7 @@ pub struct UserCreateRest {
 
 #[derive(juniper::GraphQLInputObject, Clone, Serialize, Deserialize)]
 #[graphql(description="SendVoteCodeInputs")]
-pub struct SendVoteCodeInputs {
+pub struct SendVoteTokenInputs {
     pub email: String
 }
 
@@ -39,7 +39,7 @@ pub struct LoginInputs {
 #[graphql(description="Login results")]
 pub struct LoginResults {
     pub succeed: bool,
-    pub vote_code: String
+    pub vote_token: String
 }
 
 // ------------------------------------------------
@@ -48,14 +48,14 @@ pub struct LoginResults {
 
 use crate::services::*;
 
-pub fn sendVoteCode_impl(content: SendVoteCodeInputs) -> FieldResult<PostResult> {
+pub fn sendVoteToken_impl(content: SendVoteTokenInputs) -> FieldResult<PostResult> {
 	Ok(PostResult::new())
 }
 
 pub fn login_impl(content: LoginInputs) -> FieldResult<LoginResults> {
 	Ok(LoginResults {
         succeed: true,
-        vote_code: "thvote-2020-81180d4a1c77A7c3FDE".into()
+        vote_token: "thvote-2020-81180d4a1c77A7c3FDE".into()
     })
 }
 
