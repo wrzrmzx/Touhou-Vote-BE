@@ -143,14 +143,14 @@ use crate::services::*;
 
 pub fn submitCharacterVote_impl(content: &NewCharacterSubmit) -> FieldResult<PostResult> {
 	// verify vote_token
-	getJSON!(UserVerifyResult, format!("http://{}/verify/{}", USER_MANAGER, content.vote_token));
+	getJSON!(UserVerifyResult, format!("http://{}/v1/verify/{}", USER_MANAGER, content.vote_token));
 	let submit_json = CharacterSubmitRest {
 		vote_token: content.vote_token.clone(),
 		characters: content.characters.clone(),
 		created_at: Utc::now(),
 		user_ip: "test".into() // TODO: how do I get IP using GQL?
 	};
-	postJSON!(PostResult, format!("http://{}/charcater/", SUBMIT_HANDLER), submit_json);
+	postJSON!(PostResult, format!("http://{}/v1/character/", SUBMIT_HANDLER), submit_json);
 	Ok(PostResult::new())
 }
 
