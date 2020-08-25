@@ -1,6 +1,13 @@
 
+use bson;
 use chrono::{DateTime, Utc};
 use serde_derive::{Serialize, Deserialize};
+
+// pub trait BsonConvertible {
+//     fn to_bson(&self) -> bson::Document {
+//         bson::to_document(&self).unwrap()
+//     }
+// }
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct CharacterSubmit {
