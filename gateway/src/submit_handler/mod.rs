@@ -148,9 +148,9 @@ pub fn submitCharacterVote_impl(content: &NewCharacterSubmit) -> FieldResult<Pos
 		vote_token: content.vote_token.clone(),
 		characters: content.characters.clone(),
 		created_at: Utc::now(),
-		user_ip: "test".into()
+		user_ip: "test".into() // TODO: how do I get IP using GQL?
 	};
-	postJSON!(PostResult, format!("http://{}/charcater/submit", SUBMIT_HANDLER), submit_json);
+	postJSON!(PostResult, format!("http://{}/charcater/", SUBMIT_HANDLER), submit_json);
 	Ok(PostResult::new())
 }
 
