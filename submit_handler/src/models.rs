@@ -1,4 +1,22 @@
 
+use chrono::{DateTime, Utc};
+use serde_derive::{Serialize, Deserialize};
+
+#[derive(Clone, Serialize, Deserialize)]
+pub struct CharacterSubmit {
+	pub name: String,
+	pub reason: Option<String>,
+	pub rank: i32
+}
+
+#[derive(Clone, Serialize, Deserialize)]
+pub struct CharacterSubmitRest {
+	pub vote_token: String,
+	pub characters: Vec<CharacterSubmit>,
+	pub created_at: DateTime<Utc>,
+	pub user_ip: String // 防刷票
+}
+
 // 人物部分
 // {
 //   vote_id: 2020, 
