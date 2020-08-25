@@ -10,6 +10,40 @@ pub struct CharacterSubmit {
 }
 
 #[derive(Clone, Serialize, Deserialize)]
+pub struct MusicSubmitRest {
+	pub vote_token: String,
+	pub music: Vec<MusicSubmit>,
+	pub created_at: DateTime<Utc>,
+	pub user_ip: String // 防刷票
+}
+
+#[derive(Clone, Serialize, Deserialize)]
+pub struct WorkSubmitRest {
+	pub vote_token: String,
+	pub works: Vec<WorkSubmit>,
+	pub created_at: DateTime<Utc>,
+	pub user_ip: String // 防刷票
+}
+
+#[derive(Clone, Serialize, Deserialize)]
+pub struct CPSubmitRest {
+	pub vote_token: String,
+	pub cps: Vec<CPSubmit>,
+	pub created_at: DateTime<Utc>,
+	pub user_ip: String // 防刷票
+}
+
+#[derive(Clone, Serialize, Deserialize)]
+pub struct PaperSubmitRest {
+	pub vote_token: String,
+	pub papers: Vec<PaperSubmit>,
+	pub created_at: DateTime<Utc>,
+	pub user_ip: String // 防刷票
+}
+
+
+
+#[derive(Clone, Serialize, Deserialize)]
 pub struct CharacterSubmitRest {
 	pub vote_token: String,
 	pub characters: Vec<CharacterSubmit>,
@@ -17,10 +51,41 @@ pub struct CharacterSubmitRest {
 	pub user_ip: String // 防刷票
 }
 
+#[derive(Clone, Serialize, Deserialize)]
+pub struct CPSubmit {
+	pub name_a: String,
+	pub name_b: String,
+	pub name_c: Option<String>,
+	pub active: Option<String>,
+	pub reason: Option<String>,
+	pub rank: i32
+}
+
+#[derive(Clone, Serialize, Deserialize)]
+pub struct MusicSubmit {
+	pub name: String,
+	pub reason: Option<String>,
+	pub rank: i32
+}
+
+#[derive(Clone, Serialize, Deserialize)]
+pub struct WorkSubmit {
+	pub name: String,
+	pub reason: Option<String>,
+	pub rank: i32
+}
+
+#[derive(Clone, Serialize, Deserialize)]
+pub struct PaperSubmit {
+	pub id: String,
+	/// 答案
+	pub answer: String
+}
+
 // 人物部分
 // {
 //   vote_id: 2020, 
-//   user_id: 用户投票验证码,
+//   vote_token: 用户投票验证码,
 //   charcaters:[{
 //     name: '',
 //     reason: '', // 理由
@@ -30,7 +95,7 @@ pub struct CharacterSubmitRest {
 // CP部分
 // {
 //   vote_id: 2020, 
-//   user_id:
+//   vote_token:
 //   cps:[{
 //     char1: '',
 //     char2: '',
@@ -42,7 +107,7 @@ pub struct CharacterSubmitRest {
 // 音乐部分：
 // {
 //   vote_id: 2020, 
-//   user_id:
+//   vote_token:
 //   musics:[{
 //     name: '',
 //     reason: '',
@@ -52,7 +117,7 @@ pub struct CharacterSubmitRest {
 // 作品部分：
 // {
 //   vote_id: 2020, 
-//   user_id:
+//   vote_token:
 //   works:[{
 //     name: '',
 //     reason: '',
@@ -62,7 +127,7 @@ pub struct CharacterSubmitRest {
 // 问卷部分
 // {
 //   vote_id: 2020, 
-//   user_id:
+//   vote_token:
 //   items:[{
 //     item: '' //问卷项代码
 //     answer: '' //回答内容

@@ -47,3 +47,23 @@ pub async fn submit_character(body: actix_web::web::Json<models::CharacterSubmit
     println!("submit_character for token={}", body.vote_token);
     Ok(HttpResponse::Ok().json(PostResult::new()))
 }
+
+pub async fn submit_music(body: actix_web::web::Json<models::MusicSubmitRest>) -> Result<HttpResponse, Error> {
+    println!("submit_music for token={}", body.vote_token);
+    Ok(HttpResponse::Ok().json(PostResult::new()))
+}
+
+pub async fn submit_cp(body: actix_web::web::Json<models::CPSubmitRest>) -> Result<HttpResponse, Error> {
+    println!("submit_cp for token={}", body.vote_token);
+    Ok(HttpResponse::Ok().json(PostResult::new()))
+}
+
+pub async fn submit_work(body: actix_web::web::Json<models::WorkSubmitRest>) -> Result<HttpResponse, Error> {
+    println!("submit_work for token={}", body.vote_token);
+    Ok(HttpResponse::Ok().json(PostResult::new()))
+}
+
+pub async fn submit_paper(body: actix_web::web::Json<models::PaperSubmitRest>) -> Result<HttpResponse, Error> {
+    println!("submit_paper for token={}", body.vote_token);
+    Ok(HttpResponse::Ok().json(PostResult::new()))
+}

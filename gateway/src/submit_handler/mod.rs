@@ -15,7 +15,7 @@ use bson::oid::ObjectId;
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct CharacterSubmitRest {
-	pub user_id: String,
+	pub vote_token: String,
 	pub characters: Vec<CharacterSubmit>,
 	pub created_at: DateTime<Utc>,
 	pub user_ip: String // 防刷票
@@ -23,7 +23,7 @@ pub struct CharacterSubmitRest {
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct MusicSubmitRest {
-	pub user_id: String,
+	pub vote_token: String,
 	pub music: Vec<MusicSubmit>,
 	pub created_at: DateTime<Utc>,
 	pub user_ip: String // 防刷票
@@ -31,7 +31,7 @@ pub struct MusicSubmitRest {
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct WorkSubmitRest {
-	pub user_id: String,
+	pub vote_token: String,
 	pub works: Vec<WorkSubmit>,
 	pub created_at: DateTime<Utc>,
 	pub user_ip: String // 防刷票
@@ -39,7 +39,7 @@ pub struct WorkSubmitRest {
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct CPSubmitRest {
-	pub user_id: String,
+	pub vote_token: String,
 	pub cps: Vec<CPSubmit>,
 	pub created_at: DateTime<Utc>,
 	pub user_ip: String // 防刷票
@@ -47,7 +47,7 @@ pub struct CPSubmitRest {
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct PaperSubmitRest {
-	pub user_id: String,
+	pub vote_token: String,
 	pub papers: Vec<PaperSubmit>,
 	pub created_at: DateTime<Utc>,
 	pub user_ip: String // 防刷票
@@ -68,7 +68,7 @@ pub struct CharacterSubmit {
 #[derive(juniper::GraphQLInputObject, Clone)]
 #[graphql(description="Character submit")]
 pub struct NewCharacterSubmit {
-	pub user_id: String,
+	pub vote_token: String,
 	pub characters: Vec<CharacterSubmit>
 }
 
@@ -86,7 +86,7 @@ pub struct CPSubmit {
 #[derive(juniper::GraphQLInputObject, Clone)]
 #[graphql(description="CP submit")]
 pub struct NewCPSubmit {
-	pub user_id: String,
+	pub vote_token: String,
 	pub cps: Vec<CPSubmit>
 }
 
@@ -101,7 +101,7 @@ pub struct MusicSubmit {
 #[derive(juniper::GraphQLInputObject, Clone)]
 #[graphql(description="Music submit")]
 pub struct NewMusicSubmit {
-	pub user_id: String,
+	pub vote_token: String,
 	pub musics: Vec<MusicSubmit>
 }
 
@@ -116,7 +116,7 @@ pub struct WorkSubmit {
 #[derive(juniper::GraphQLInputObject, Clone)]
 #[graphql(description="Work submit")]
 pub struct NewWorkSubmit {
-	pub user_id: String,
+	pub vote_token: String,
 	pub work: Vec<WorkSubmit>
 }
 
@@ -131,7 +131,7 @@ pub struct PaperSubmit {
 #[derive(juniper::GraphQLInputObject, Clone)]
 #[graphql(description="Paper submit")]
 pub struct NewPaperSubmit {
-	pub user_id: String,
+	pub vote_token: String,
 	pub papers: Vec<PaperSubmit>
 }
 
@@ -142,10 +142,10 @@ pub struct NewPaperSubmit {
 use crate::services::*;
 
 pub fn submitCharacterVote_impl(content: &NewCharacterSubmit) -> FieldResult<PostResult> {
-	// verify user_id
-	getJSON!(UserVerifyResult, format!("http://{}/verify/{}", USER_MANAGER, content.user_id));
+	// verify vote_token
+	getJSON!(UserVerifyResult, format!("http://{}/verify/{}", USER_MANAGER, content.vote_token));
 	let submit_json = CharacterSubmitRest {
-		user_id: content.user_id.clone(),
+		vote_token: content.vote_token.clone(),
 		characters: content.characters.clone(),
 		created_at: Utc::now(),
 		user_ip: "test".into()
