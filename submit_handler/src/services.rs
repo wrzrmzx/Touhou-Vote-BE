@@ -5,7 +5,7 @@ use crate::models;
 use crate::shared::Error;
 
 #[derive(Clone)]
-pub struct SubmitService {
+pub struct SubmitServiceV1 {
     pub character_coll: Collection,
     pub music_coll: Collection,
     pub cp_coll: Collection,
@@ -13,7 +13,7 @@ pub struct SubmitService {
     pub paper_coll: Collection
 }
 
-impl SubmitService {
+impl SubmitServiceV1 {
     pub fn new(db: Database) -> SubmitService {
         SubmitService { 
             character_coll: db.collection("character"),
