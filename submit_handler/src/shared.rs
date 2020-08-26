@@ -26,6 +26,15 @@ impl Display for Error {
     }
 }
 
+impl From<reqwest::Error> for Error {
+    fn from(error: reqwest::Error) -> Self {
+        Error {
+            msg: format!("{:?}", error),
+            aux: match error.url() { Some(url) => url.to_string(), None => "".into() }
+        }
+    }
+}
+
 #[derive(Debug, Serialize)]
 pub struct PostResult {
     pub err_code: i32

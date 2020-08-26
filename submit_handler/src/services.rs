@@ -14,8 +14,8 @@ pub struct SubmitServiceV1 {
 }
 
 impl SubmitServiceV1 {
-    pub fn new(db: Database) -> SubmitService {
-        SubmitService { 
+    pub fn new(db: Database) -> SubmitServiceV1 {
+        SubmitServiceV1 { 
             character_coll: db.collection("character"),
             music_coll: db.collection("music"),
             cp_coll: db.collection("cp"),

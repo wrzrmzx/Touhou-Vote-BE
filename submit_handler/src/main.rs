@@ -19,11 +19,11 @@ async fn main() -> std::io::Result<()> {
         let submit_service_v1 = services::SubmitServiceV1::new(db.clone());
         App::new()
             .data(submit_service_v1)
-            .route("/v1/character/", web::post().to(handlers::submit_character))
-            .route("/v1/music/", web::post().to(handlers::submit_music))
-            .route("/v1/cp/", web::post().to(handlers::submit_cp))
-            .route("/v1/work/", web::post().to(handlers::submit_work))
-            .route("/v1/paper/", web::post().to(handlers::submit_paper))
+            .route("/v1/character/", web::post().to(handlers::submit_character_v1))
+            .route("/v1/music/", web::post().to(handlers::submit_music_v1))
+            .route("/v1/cp/", web::post().to(handlers::submit_cp_v1))
+            .route("/v1/work/", web::post().to(handlers::submit_work_v1))
+            .route("/v1/paper/", web::post().to(handlers::submit_paper_v1))
     })
     .bind("0.0.0.0:8081")?
     .run()
