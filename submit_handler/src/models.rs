@@ -3,17 +3,18 @@ use bson;
 use chrono::{DateTime, Utc};
 use serde_derive::{Serialize, Deserialize};
 
-// pub trait BsonConvertible {
-//     fn to_bson(&self) -> bson::Document {
-//         bson::to_document(&self).unwrap()
-//     }
-// }
+pub trait BsonConvertible where Self: serde::Serialize {
+    fn to_bson(&self) -> bson::Document {
+        bson::to_document(&self).unwrap()
+    }
+}
 
 #[derive(Clone, Serialize, Deserialize)]
-pub struct CharacterSubmit {
-	pub name: String,
-	pub reason: Option<String>,
-	pub rank: i32
+pub struct CharacterSubmitRest {
+	pub vote_token: String,
+	pub characters: Vec<CharacterSubmit>,
+	pub created_at: DateTime<Utc>,
+	pub user_ip: String // 防刷票
 }
 
 #[derive(Clone, Serialize, Deserialize)]
@@ -49,15 +50,12 @@ pub struct PaperSubmitRest {
 }
 
 
-
 #[derive(Clone, Serialize, Deserialize)]
-pub struct CharacterSubmitRest {
-	pub vote_token: String,
-	pub characters: Vec<CharacterSubmit>,
-	pub created_at: DateTime<Utc>,
-	pub user_ip: String // 防刷票
+pub struct CharacterSubmit {
+	pub name: String,
+	pub reason: Option<String>,
+	pub rank: i32
 }
-
 #[derive(Clone, Serialize, Deserialize)]
 pub struct CPSubmit {
 	pub name_a: String,
